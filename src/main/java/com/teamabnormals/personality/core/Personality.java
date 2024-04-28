@@ -4,15 +4,18 @@ import com.teamabnormals.blueprint.common.world.storage.tracking.DataProcessors;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedData;
 import com.teamabnormals.blueprint.common.world.storage.tracking.TrackedDataManager;
 import com.teamabnormals.personality.client.PersonalityClient;
+import com.teamabnormals.personality.client.model.FishingHookModel;
 import com.teamabnormals.personality.common.network.MessageC2SCrawl;
 import com.teamabnormals.personality.common.network.MessageC2SSit;
 import com.teamabnormals.personality.common.network.MessageS2CSyncCrawl;
 import com.teamabnormals.personality.common.network.MessageS2CSyncSit;
 import net.minecraft.client.model.geom.LayerDefinitions;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.common.MinecraftForge;
@@ -61,6 +64,7 @@ public class Personality {
 
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
 			bus.addListener(this::registerKeyBindings);
+			bus.addListener(this::registerLayerDefinitions);
 			bus.addListener(this::configUpdate);
 		});
 
@@ -84,6 +88,12 @@ public class Personality {
 		PersonalityClient.SIT.setKeyConflictContext(KeyConflictContext.IN_GAME);
 		event.register(PersonalityClient.CRAWL);
 		event.register(PersonalityClient.SIT);
+	}
+
+
+	@OnlyIn(Dist.CLIENT)
+	private void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+		event.registerLayerDefinition(new ModelLayerLocation(new ResourceLocation(MOD_ID, "fishing_hook"), "main"), FishingHookModel::createBodyLayer);
 	}
 
 	@OnlyIn(Dist.CLIENT)
