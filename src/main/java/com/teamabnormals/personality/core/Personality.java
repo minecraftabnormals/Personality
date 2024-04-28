@@ -24,7 +24,6 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.config.ModConfig.Type;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -65,9 +64,10 @@ public class Personality {
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
 			bus.addListener(this::registerKeyBindings);
 			bus.addListener(this::registerLayerDefinitions);
-			bus.addListener(this::configUpdate);
+			bus.addListener(this::modConfigEvent);
 		});
 
+		context.registerConfig(ModConfig.Type.COMMON, PersonalityConfig.COMMON_SPEC);
 		context.registerConfig(ModConfig.Type.CLIENT, PersonalityConfig.CLIENT_SPEC);
 	}
 
@@ -97,8 +97,8 @@ public class Personality {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private void configUpdate(ModConfigEvent event) {
-		if (event.getConfig().getType() == Type.CLIENT) {
+	private void modConfigEvent(ModConfigEvent event) {
+		if (event.getConfig().getType() == ModConfig.Type.CLIENT) {
 			updateArmorValues();
 		}
 	}
@@ -107,6 +107,9 @@ public class Personality {
 		if (PersonalityConfig.CLIENT.deflateArmorModel.get()) {
 			LayerDefinitions.INNER_ARMOR_DEFORMATION = new CubeDeformation(PersonalityConfig.CLIENT.innerArmorDeformation.get().floatValue());
 			LayerDefinitions.OUTER_ARMOR_DEFORMATION = new CubeDeformation(PersonalityConfig.CLIENT.outerArmorDeformation.get().floatValue());
+		} else {
+			LayerDefinitions.INNER_ARMOR_DEFORMATION = new CubeDeformation(0.5F);
+			LayerDefinitions.OUTER_ARMOR_DEFORMATION = new CubeDeformation(1.0F);
 		}
 	}
 

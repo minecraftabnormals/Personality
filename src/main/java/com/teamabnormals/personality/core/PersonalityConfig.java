@@ -3,9 +3,20 @@ package com.teamabnormals.personality.core;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
+import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import org.apache.commons.lang3.tuple.Pair;
 
 public class PersonalityConfig {
+
+	public static class Common {
+		public final BooleanValue equipableBanners;
+
+		public Common(ForgeConfigSpec.Builder builder) {
+			builder.push("tweaks");
+			this.equipableBanners = builder.comment("If Banners can be worn in the helmet slot").define("Equipable Banners", true);
+			builder.pop();
+		}
+	}
 
 	public static class Client {
 		public final BooleanValue climbingAnimation;
@@ -36,11 +47,17 @@ public class PersonalityConfig {
 			builder.pop();
 		}
 	}
+	public static final ForgeConfigSpec COMMON_SPEC;
+	public static final Common COMMON;
 
 	public static final ForgeConfigSpec CLIENT_SPEC;
 	public static final Client CLIENT;
 
 	static {
+		Pair<Common, ForgeConfigSpec> commonSpecPair = new ForgeConfigSpec.Builder().configure(Common::new);
+		COMMON_SPEC = commonSpecPair.getRight();
+		COMMON = commonSpecPair.getLeft();
+
 		Pair<Client, ForgeConfigSpec> clientSpecPair = new ForgeConfigSpec.Builder().configure(Client::new);
 		CLIENT_SPEC = clientSpecPair.getRight();
 		CLIENT = clientSpecPair.getLeft();

@@ -1,5 +1,6 @@
 package com.teamabnormals.personality.core.mixin;
 
+import com.teamabnormals.personality.core.PersonalityConfig;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.BannerItem;
@@ -17,6 +18,6 @@ public abstract class BannerItemMixin extends StandingAndWallBlockItem {
 
 	@Override
 	public EquipmentSlot getEquipmentSlot(ItemStack stack) {
-		return EquipmentSlot.HEAD;
+		return PersonalityConfig.COMMON.equipableBanners.get() ? EquipmentSlot.HEAD : super.getEquipmentSlot(stack);
 	}
 }
