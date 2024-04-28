@@ -26,7 +26,6 @@ public class GhastRendererMixin {
 		float xz = 4F + anim;
 
 		matrixStack.scale(xz, y, xz);
-		matrixStack.scale(xz, y, xz);
 
 		ci.cancel();
 	}
