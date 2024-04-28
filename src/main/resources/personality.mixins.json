@@ -23,7 +23,8 @@
     "client.HumanoidModelMixin",
     "client.LocalPlayerMixin",
     "client.RemotePlayerMixin",
-    "client.VillagerModelMixin"
+    "client.VillagerModelMixin",
+    "client.VillagerRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
