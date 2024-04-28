@@ -22,10 +22,13 @@ public class VillagerEyelidsLayer extends RenderLayer<Villager, VillagerModel<Vi
 
 	@Override
 	public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLightIn, Villager villager, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-		if (PersonalityConfig.CLIENT.villagerSleepEyes.get() && villager.isSleeping() && !villager.isInvisible()) {
-			VertexConsumer builder = buffer.getBuffer(RenderType.entityCutoutNoCull(LOCATION));
-			this.getParentModel().setupAnim(villager, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-			this.getParentModel().renderToBuffer(poseStack, builder, packedLightIn, LivingEntityRenderer.getOverlayCoords(villager, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+		if (PersonalityConfig.CLIENT.villagerSleepEyes.get() && !villager.isInvisible() && villager.isSleeping()) {
+			int time = (int) (villager.level().getDayTime() % 24000L);
+			if (time >= 12000 && time <= 23900) {
+				VertexConsumer builder = buffer.getBuffer(RenderType.entityCutoutNoCull(LOCATION));
+				this.getParentModel().setupAnim(villager, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+				this.getParentModel().renderToBuffer(poseStack, builder, packedLightIn, LivingEntityRenderer.getOverlayCoords(villager, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+			}
 		}
 	}
 }
