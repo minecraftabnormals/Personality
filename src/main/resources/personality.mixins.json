@@ -6,6 +6,8 @@
   "refmap": "personality.refmap.json",
   "mixins": [
     "BannerItemMixin",
+    "GhastShootFireballGoalMixin",
+    "GhastMixin",
     "LivingEntityMixin",
     "PlayerMixin"
   ],
@@ -13,6 +15,7 @@
     "client.AccessibilityOptionsScreenMixin",
     "client.AgeableListModelMixin",
     "client.ControlsScreenMixin",
+    "client.GhastRendererMixin",
     "client.HumanoidModelMixin",
     "client.LocalPlayerMixin",
     "client.RemotePlayerMixin"
