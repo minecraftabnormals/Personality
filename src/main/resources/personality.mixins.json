@@ -22,7 +22,8 @@
     "client.GhastRendererMixin",
     "client.HumanoidModelMixin",
     "client.LocalPlayerMixin",
-    "client.RemotePlayerMixin"
+    "client.RemotePlayerMixin",
+    "client.VillagerModelMixin"
   ],
   "injectors": {
     "defaultRequire": 1

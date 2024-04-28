@@ -32,6 +32,8 @@ public class PersonalityConfig {
 		public final BooleanValue toggleCrawl;
 		public final BooleanValue toggleSitting;
 
+		public final BooleanValue largeBabyVillagerHeads;
+
 		public Client(ForgeConfigSpec.Builder builder) {
 			builder.push("keybindings");
 			this.toggleCrawl = builder.comment("If true, crawling will be toggled on or off instead of the keybinding being held down").define("toggleCrawl", false);
@@ -45,6 +47,9 @@ public class PersonalityConfig {
 			this.deflateArmorModel = builder.comment("If the armor model should be deflated using the inner and outer armor deformations").define("Deflate armor model", true);
 			this.innerArmorDeformation = builder.comment("The CubeDeformation for the inner (leggings) armor model - Vanilla is 0.5").defineInRange("Inner armor deformation", 0.375F, 0.0F, 2.0F);
 			this.outerArmorDeformation = builder.comment("The CubeDeformation for the outer armor model - Vanilla is 1.0").defineInRange("Outer armor deformation", 0.625F, 0.0F, 2.0F);
+			builder.pop();
+			builder.push("villagers");
+			this.largeBabyVillagerHeads = builder.comment("If Baby Villagers should have larger heads like other baby mobs").define("Large baby villager heads", true);
 			builder.pop();
 			builder.pop();
 		}
