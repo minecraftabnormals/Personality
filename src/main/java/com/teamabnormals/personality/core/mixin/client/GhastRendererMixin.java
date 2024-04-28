@@ -2,6 +2,7 @@ package com.teamabnormals.personality.core.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.teamabnormals.personality.common.extension.GhastExtension;
+import com.teamabnormals.personality.core.PersonalityConfig;
 import net.minecraft.client.renderer.entity.GhastRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.monster.Ghast;
@@ -15,6 +16,8 @@ public class GhastRendererMixin {
 
 	@Inject(method = "scale(Lnet/minecraft/world/entity/monster/Ghast;Lcom/mojang/blaze3d/vertex/PoseStack;F)V", at = @At("HEAD"), cancellable = true)
 	protected void preRenderCallback(Ghast entity, PoseStack matrixStack, float partialTicks, CallbackInfo ci) {
+		if (!PersonalityConfig.CLIENT.ghastAttackAnimation.get()) return;
+		
 		GhastExtension ext = (GhastExtension) entity;
 
 		float attack = Mth.lerp(partialTicks, ext.getPreviousAttackTimer(), ext.getAttackTimer()) / 10F;
@@ -23,7 +26,8 @@ public class GhastRendererMixin {
 		float xz = 4F + anim;
 
 		matrixStack.scale(xz, y, xz);
+		matrixStack.scale(xz, y, xz);
 
-		ci.cancel(); // TODO: config
+		ci.cancel();
 	}
 }

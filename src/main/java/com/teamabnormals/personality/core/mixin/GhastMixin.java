@@ -1,6 +1,7 @@
 package com.teamabnormals.personality.core.mixin;
 
 import com.teamabnormals.personality.common.extension.GhastExtension;
+import com.teamabnormals.personality.core.PersonalityConfig;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.FlyingMob;
 import net.minecraft.world.entity.monster.Ghast;
@@ -22,8 +23,8 @@ public abstract class GhastMixin extends FlyingMob implements GhastExtension {
 
 	@Override
 	public void tick() {
-		super.tick(); // TODO: config
-		if (this.level().isClientSide()) {
+		super.tick();
+		if (this.level().isClientSide() && PersonalityConfig.CLIENT.ghastAttackAnimation.get()) {
 			this.prevAttackTimer = this.attackTimer;
 			if (this.attackTimer > 0) {
 				this.attackTimer--;
@@ -33,9 +34,9 @@ public abstract class GhastMixin extends FlyingMob implements GhastExtension {
 
 	@Override
 	public void handleEntityEvent(byte id) {
-		if (id == 4) {
+		if (PersonalityConfig.CLIENT.ghastAttackAnimation.get() && id == 4) {
 			this.prevAttackTimer = 10;
-			this.attackTimer = 10; // TODO: config
+			this.attackTimer = 10;
 			return;
 		}
 

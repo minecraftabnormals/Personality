@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack.Pose;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.teamabnormals.personality.client.model.FishingHookModel;
 import com.teamabnormals.personality.core.Personality;
+import com.teamabnormals.personality.core.PersonalityConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -20,7 +21,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.FishingRodItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -56,6 +56,9 @@ public abstract class FishingHookRendererMixin extends EntityRenderer<FishingHoo
 
 	@Inject(method = "render(Lnet/minecraft/world/entity/projectile/FishingHook;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V", at = @At("HEAD"), cancellable = true)
 	public void render(FishingHook bobber, float yaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, CallbackInfo ci) {
+		if (!PersonalityConfig.CLIENT.fishingHookModel.get())
+			return;
+
 		Player player = bobber.getPlayerOwner();
 		if (player != null) {
 			ItemStack mainRod = player.getMainHandItem();
@@ -68,7 +71,7 @@ public abstract class FishingHookRendererMixin extends EntityRenderer<FishingHoo
 				{
 					poseStack.scale(1, -1, -1);
 					poseStack.translate(0, -1.5, 0);
-					MODEL.renderToBuffer(poseStack, ItemRenderer.getFoilBufferDirect(buffer, RENDER_TYPE, false, enchanted), packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1); // TODO: add glint config
+					MODEL.renderToBuffer(poseStack, ItemRenderer.getFoilBufferDirect(buffer, RENDER_TYPE, false, enchanted), packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
 				}
 				poseStack.popPose();
 
@@ -124,6 +127,6 @@ public abstract class FishingHookRendererMixin extends EntityRenderer<FishingHoo
 			super.render(bobber, yaw, partialTicks, poseStack, buffer, packedLight);
 		}
 
-		ci.cancel(); // TODO: config
+		ci.cancel();
 	}
 }
