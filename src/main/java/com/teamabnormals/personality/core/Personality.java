@@ -8,6 +8,8 @@ import com.teamabnormals.personality.common.network.MessageC2SCrawl;
 import com.teamabnormals.personality.common.network.MessageC2SSit;
 import com.teamabnormals.personality.common.network.MessageS2CSyncCrawl;
 import com.teamabnormals.personality.common.network.MessageS2CSyncSit;
+import net.minecraft.client.model.geom.LayerDefinitions;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -19,6 +21,8 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.config.ModConfig.Type;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -55,7 +59,10 @@ public class Personality {
 		bus.addListener(this::commonSetup);
 		bus.addListener(this::clientSetup);
 
-		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> bus.addListener(this::registerKeyBindings));
+		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+			bus.addListener(this::registerKeyBindings);
+			bus.addListener(this::configUpdate);
+		});
 
 		context.registerConfig(ModConfig.Type.CLIENT, PersonalityConfig.CLIENT_SPEC);
 	}
@@ -77,6 +84,20 @@ public class Personality {
 		PersonalityClient.SIT.setKeyConflictContext(KeyConflictContext.IN_GAME);
 		event.register(PersonalityClient.CRAWL);
 		event.register(PersonalityClient.SIT);
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	private void configUpdate(ModConfigEvent event) {
+		if (event.getConfig().getType() == Type.CLIENT) {
+			updateArmorValues();
+		}
+	}
+
+	private static void updateArmorValues() {
+		if (PersonalityConfig.CLIENT.deflateArmorModel.get()) {
+			LayerDefinitions.INNER_ARMOR_DEFORMATION = new CubeDeformation(PersonalityConfig.CLIENT.innerArmorDeformation.get().floatValue());
+			LayerDefinitions.OUTER_ARMOR_DEFORMATION = new CubeDeformation(PersonalityConfig.CLIENT.outerArmorDeformation.get().floatValue());
+		}
 	}
 
 	private void setupMessages() {
