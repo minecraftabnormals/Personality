@@ -6,10 +6,13 @@
   "refmap": "personality.refmap.json",
   "mixins": [
     "BannerItemMixin",
+    "BlueprintFallingBlockEntityMixin",
+    "FallingBlockMixin",
     "GhastMixin",
     "GhastShootFireballGoalMixin",
     "LivingEntityMixin",
-    "PlayerMixin"
+    "PlayerMixin",
+    "SnowLayerBlockMixin"
   ],
   "client": [
     "client.AccessibilityOptionsScreenMixin",

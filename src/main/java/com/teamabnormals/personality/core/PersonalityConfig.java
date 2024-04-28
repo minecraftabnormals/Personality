@@ -10,10 +10,12 @@ public class PersonalityConfig {
 
 	public static class Common {
 		public final BooleanValue equipableBanners;
+		public final BooleanValue fallingSnowLayers;
 
 		public Common(ForgeConfigSpec.Builder builder) {
 			builder.push("tweaks");
-			this.equipableBanners = builder.comment("If Banners can be worn in the helmet slot").define("Equipable Banners", true);
+			this.equipableBanners = builder.comment("If Banners can be worn in the helmet slot").define("Equipable banners", true);
+			this.fallingSnowLayers = builder.comment("If Snow layers have gravity like Sand and Gravel").define("Falling snow layers", true);
 			builder.pop();
 		}
 	}
