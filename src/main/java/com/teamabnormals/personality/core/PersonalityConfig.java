@@ -34,6 +34,8 @@ public class PersonalityConfig {
 		public final BooleanValue largeBabyVillagerHeads;
 		public final BooleanValue villagersCloseEyes;
 
+		public final BooleanValue sheepFurOverlay;
+
 		public Client(ForgeConfigSpec.Builder builder) {
 			builder.push("keybindings");
 			this.toggleCrawl = builder.comment("If true, crawling will be toggled on or off instead of the keybinding being held down").define("toggleCrawl", false);
@@ -51,6 +53,9 @@ public class PersonalityConfig {
 			builder.push("villagers");
 			this.largeBabyVillagerHeads = builder.comment("If Baby Villagers should have larger heads like other baby mobs").define("Large baby villager heads", true);
 			this.villagersCloseEyes = builder.comment("If Villagers should close their eyes when sleeping").define("Villager close eyes", true);
+			builder.pop();
+			builder.push("sheep");
+			this.sheepFurOverlay = builder.comment("If Sheep should show their fur color beneath their coat, like in Bedrock edition").define("Sheep fur overlay", true);
 			builder.pop();
 			builder.pop();
 		}

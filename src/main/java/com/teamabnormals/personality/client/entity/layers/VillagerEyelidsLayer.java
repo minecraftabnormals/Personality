@@ -22,7 +22,7 @@ public class VillagerEyelidsLayer extends RenderLayer<Villager, VillagerModel<Vi
 
 	@Override
 	public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLightIn, Villager villager, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-		if (PersonalityConfig.CLIENT.villagersCloseEyes.get() && !villager.isInvisible() && villager.isSleeping()) {
+		if (!villager.isInvisible() && villager.isSleeping() && PersonalityConfig.CLIENT.villagersCloseEyes.get()) {
 			int time = (int) (villager.level().getDayTime() % 24000L);
 			if (time >= 12000 && time <= 23900) {
 				VertexConsumer builder = buffer.getBuffer(RenderType.entityCutoutNoCull(LOCATION));

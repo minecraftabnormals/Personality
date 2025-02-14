@@ -23,6 +23,7 @@
     "client.HumanoidModelMixin",
     "client.LocalPlayerMixin",
     "client.RemotePlayerMixin",
+    "client.SheepRendererMixin",
     "client.VillagerModelMixin",
     "client.VillagerRendererMixin"
   ],
